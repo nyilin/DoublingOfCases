@@ -153,10 +153,11 @@ AIC.db <- function(object, ..., k = 2) {
 }
 #' Summarise the fitted model for the doubling of cases approach
 #' @param object The model fitted using \code{\link{logit_db}}.
+#' @param print Whether to print the estimated coefficients. Default is TRUE.
 #' @param ... Additional input.
 #' @details See usage in \code{\link{logit_db}}.
 #' @export
-summary.db <- function(object, ...) {
+summary.db <- function(object, print = TRUE, ...) {
   vcov_robust <- vcov(object)
   se_robust <- sqrt(diag(vcov_robust))
   coefficients <- data.frame(
@@ -165,7 +166,7 @@ summary.db <- function(object, ...) {
     pval = 2 * pt(q = abs(coef(object) / se_robust), df = object$df.residual,
                   lower.tail = FALSE)
   )
-  print(coefficients, digits = 4)
+  if (print) print(coefficients, digits = 4)
   list(call = object$call, aic = object$aic,
        df = c(object$rank, object$df.residual, length(coef(object))),
        coefficients = coefficients,

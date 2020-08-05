@@ -13,12 +13,14 @@
 
 \method{AIC}{db}(object, ..., k = 2)
 
-\method{summary}{db}(object, ...)
+\method{summary}{db}(object, print = TRUE, ...)
 }
 \arguments{
 \item{object}{The model fitted using \code{\link{logit_db}}.}
 
 \item{...}{Additional input.}
+
+\item{print}{Whether to print the estimated coefficients. Default is TRUE.}
 }
 \description{
 Summarise the fitted model for the doubling of cases approach
