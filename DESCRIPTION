@@ -4,6 +4,7 @@ Title: Estimating Relative Risk in Studies of Binary Outcomes Using the Doubling
 Version: 0.1.0
 Author: Ning Yilin
 Maintainer: Ning Yilin <ningyilinnyl@gmail.com>
+Depends: R (>= 3.5.0)
 Description: Estimate the relative risk in studies of binary outcomes by 
   doubling the cases in the data and applying the logistic regression model to 
   modified data. Applicable to cohort data, cross-sectional data and 

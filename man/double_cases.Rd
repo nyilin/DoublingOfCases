@@ -4,12 +4,12 @@
 \alias{double_cases}
 \title{Double the cases in a dataset}
 \usage{
-double_cases(dat, y_name = "y")
+double_cases(data, y_name = "y")
 }
 \arguments{
-\item{dat}{A dataset.}
+\item{data}{A dataset.}
 
-\item{y_name}{Name or index of the outcome column in \code{dat}.}
+\item{y_name}{Name or index of the outcome column in \code{data}.}
 }
 \value{
 Returns a dataset where each case in the input dataset is doubled. An

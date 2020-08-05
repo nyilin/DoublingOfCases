@@ -5,36 +5,66 @@
 \title{Estimate the relative risk from a binary outcome by using the
 doubling-of-cases approach}
 \usage{
-logit_db(formula, weight_name = NULL, dat)
+logit_db(formula, weight_name = NULL, data, ...)
 }
 \arguments{
 \item{formula}{Formula.}
 
-\item{weight_name}{Name or column index in \code{dat} corresponding to the
-sampling weights, if \code{dat} is a case-control sample. Default is
+\item{weight_name}{Name or column index in \code{data} corresponding to the
+sampling weights, if \code{data} is a case-control sample. Default is
 \code{NULL}, corresponding to scenarios where the full cohort (or
 cross-sectional data) is available.}
 
-\item{dat}{A dataset (without doubling the cases).}
+\item{data}{A \code{data.frame} or named matrix.}
+
+\item{...}{Other input to \code{\link{glm}}.}
+}
+\value{
+Returns an object of class \code{db} that inherits from the
+  \code{\link{glm}} class. Note that although \code{family} of this object is
+  logistic, the underlying model fitted is log-binomial. Items \code{call},
+  \code{deviance}, \code{null.deviance} and \code{weights} are not available.
 }
 \description{
 Estimate the relative risk from a binary outcome by using the
 doubling-of-cases approach
 }
 \details{
-This function doubles the cases in \code{dat} by using the
-  \code{\link{double_cases}} function, and then applies a logistic regression
-  to this modified dataset to estimate the relative risk. The robust SE of
-  the estimated log relative risk is described in Shouten et al (1993).
+This function doubles the cases in \code{data}, and then applies a
+  logistic regression to this modified dataset to estimate the relative risk.
+  The robust SE of the estimated log relative risk is described in Schouten et
+  al (1993).
 
-  If \code{dat} is a (matched) case-control sample, the logistic regression
+  If \code{data} is a (matched) case-control sample, the logistic regression
   need to be weighted by the sampling weights corresponding to each subject
-  in \code{dat}, where the weight is 1 for each case (if all cases are
+  in \code{data}, where the weight is 1 for each case (if all cases are
   selected), and the weight for each control is the number of eligible
   controls divided by the number of controls sampled (counted within each
-  sampling stratum if \code{dat} is a matched sample). The robust SE in such
-  analyses is modified from Shouten et al (1993) by incorporating the
+  sampling stratum if \code{data} is a matched sample). The robust SE in such
+  analyses is modified from Schouten et al (1993) by incorporating the
   sampling weights in H2.
+}
+\examples{
+library(DoublingOfCases)
+data("cohort_sim")
+# Draw a 1:1 case-control sample from cohort:
+i_controls <- sample(which(cohort_sim$y == 0), size = sum(cohort_sim$y),
+                     replace = FALSE)
+dat_cc <- rbind(
+  cbind(cohort_sim[cohort_sim$y == 1, ], w = 1),
+  cbind(cohort_sim[i_controls, ], w = sum(cohort_sim$y == 0) / length(i_controls))
+)
+# Estimate relative risk (RR) by using doubling of cases approach:
+# Fit the model:
+m_cc <- logit_db(y ~ x + male, data = dat_cc, weight_name = "w")
+# Extract model summary:
+summ_cc <- summary(m_cc)
+# Print the estimates log RR, SEs and p-values:
+summ_cc$coefficients
+# Extract AIC, log-likelihood and fitted outcomes:
+AIC(m_cc)
+logLik(m_cc)
+fitted(m_cc)
 }
 \references{
 \itemize{
