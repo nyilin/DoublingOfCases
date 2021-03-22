@@ -77,8 +77,10 @@ compute_h2 <- function(X, r) {
 #' m_cc <- logit_db(y ~ x + male, data = dat_cc, weight_name = "w")
 #' # Extract model summary:
 #' summ_cc <- summary(m_cc)
-#' # Print the estimates log RR, SEs and p-values:
+#' # Print the estimates log RR, RR, SEs and p-values:
 #' summ_cc$coefficients
+#' # Compute the 95% CI of the estimated RR:
+#' confint(m_cc, exp = TRUE)
 #' # Extract AIC, log-likelihood and fitted outcomes:
 #' AIC(m_cc)
 #' logLik(m_cc)
@@ -114,8 +116,10 @@ logit_db <- function(formula, weight_name = NULL, data, ...) {
   m$df.residual <- nrow(data) - length(coef(m))
   m$prior.weights <- data$.weight
   if (any(p > 1)) {
-    warning(simpleWarning(sprintf("%d (%.1f%%) of the %d subjects have estimated probability >1.",
-                                  sum(p > 1), mean(p > 1) * 100, nrow(data))))
+    warning(simpleWarning(sprintf(
+      "%d (%.1f%%) of the %d subjects have estimated probability >1.",
+      sum(p > 1), mean(p > 1) * 100, nrow(data)
+    )))
     llh <- NA
   } else {
     llh <- sum(data$.weight * y * log(p) + data$.weight * (1 - y) * log(1 - p))
@@ -151,22 +155,55 @@ logLik.db <- function(object, ...) {
 AIC.db <- function(object, ..., k = 2) {
   k * length(coef(object)) - 2 * logLik(object)
 }
+#' @describeIn summary.db
+#' Confidence intervals for estimated coefficients
+#' @export
+confint.db <- function(object, parm, exp = FALSE, level = 0.95, ...) {
+  level <- as.numeric(level)
+  if (is.na(level) || (level <= 0 | level >= 1)) {
+    stop(simpleError("level should be between 0 and 1."))
+  }
+  vcov_robust <- vcov.db(object)
+  se_robust <- sqrt(diag(vcov_robust))
+  est <- coef(object)
+  if (!missing(parm)) {
+    est <- est[parm]
+    se_robust <- se_robust[parm]
+  }
+  p <- (1 - level) / 2
+  q <- qt(p = p, df = object$df.residual)
+  ci_mat <- data.frame(l = est - q * se_robust,
+                       u = est + q * se_robust)
+  names(ci_mat) <- c(paste0(round(p * 100, 2), "%"),
+                     paste0(round((1 - p) * 100, 2), "%"))
+  rownames(ci_mat) <- names(est)
+  if (exp) {
+    exp(ci_mat)
+  } else {
+    ci_mat
+  }
+}
 #' Summarise the fitted model for the doubling of cases approach
 #' @param object The model fitted using \code{\link{logit_db}}.
-#' @param print Whether to print the estimated coefficients. Default is TRUE.
+#' @param parm A specification of which parameters are to be given confidence
+#'   intervals, either a vector of numbers or a vector of names. If missing, all
+#'   parameters are considered.
+#' @param exp Whether to generate confidence interval for the exponentiated
+#'   coefficients (i.e., the estimated risk ratio, if \code{TRUE}, the default),
+#'   or for the estimated coefficients (if \code{FALSE}).
+#' @param level The confidence level required. Default is 0.95 (i.e., 95\%).
 #' @param ... Additional input.
 #' @details See usage in \code{\link{logit_db}}.
 #' @export
-summary.db <- function(object, print = TRUE, ...) {
-  vcov_robust <- vcov(object)
+summary.db <- function(object, ...) {
+  vcov_robust <- vcov.db(object)
   se_robust <- sqrt(diag(vcov_robust))
   coefficients <- data.frame(
-    est = coef(object), se_naive = sqrt(diag(object$H1)),
-    se_robust = se_robust,
+    est = coef(object), exp_est = exp(coef(object)),
+    se_naive = sqrt(diag(object$H1)), se_robust = se_robust,
     pval = 2 * pt(q = abs(coef(object) / se_robust), df = object$df.residual,
                   lower.tail = FALSE)
   )
-  if (print) print(coefficients, digits = 4)
   list(call = object$call, aic = object$aic,
        df = c(object$rank, object$df.residual, length(coef(object))),
        coefficients = coefficients,

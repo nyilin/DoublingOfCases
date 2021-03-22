@@ -59,8 +59,10 @@ dat_cc <- rbind(
 m_cc <- logit_db(y ~ x + male, data = dat_cc, weight_name = "w")
 # Extract model summary:
 summ_cc <- summary(m_cc)
-# Print the estimates log RR, SEs and p-values:
+# Print the estimates log RR, RR, SEs and p-values:
 summ_cc$coefficients
+# Compute the 95\% CI of the estimated RR:
+confint(m_cc, exp = TRUE)
 # Extract AIC, log-likelihood and fitted outcomes:
 AIC(m_cc)
 logLik(m_cc)
