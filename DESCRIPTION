@@ -12,4 +12,4 @@ Description: Estimate the relative risk in studies of binary outcomes by
 License: LGPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

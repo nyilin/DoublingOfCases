@@ -6,6 +6,11 @@
 \usage{
 compute_h2(X, r)
 }
+\arguments{
+\item{X}{Design matrix from original data (without doubling the cases).}
+
+\item{r}{(Weighted) residuals for each subject.}
+}
 \description{
 Compute H2 matrix for robust covariance
 }

@@ -2,6 +2,7 @@ S3method(AIC,db)
 S3method(logLik,db)
 S3method(summary,db)
 S3method(vcov,db)
+S3method(confint,db)
 export(logit_db)
 importFrom("stats", "as.formula", "binomial", "coef", "glm", "logLik",
-           "model.matrix", "pt", "vcov")
+           "model.matrix", "pt", "qt", "vcov")

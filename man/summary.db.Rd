@@ -4,6 +4,7 @@
 \alias{vcov.db}
 \alias{logLik.db}
 \alias{AIC.db}
+\alias{confint.db}
 \alias{summary.db}
 \title{Summarise the fitted model for the doubling of cases approach}
 \usage{
@@ -13,14 +14,27 @@
 
 \method{AIC}{db}(object, ..., k = 2)
 
-\method{summary}{db}(object, print = TRUE, ...)
+\method{confint}{db}(object, parm, level = 0.95, exp = FALSE, ...)
+
+\method{summary}{db}(object, ...)
 }
 \arguments{
 \item{object}{The model fitted using \code{\link{logit_db}}.}
 
 \item{...}{Additional input.}
 
-\item{print}{Whether to print the estimated coefficients. Default is TRUE.}
+\item{k}{The penalty per parameter to be used; the default k = 2 is the
+classical AIC.}
+
+\item{parm}{A specification of which parameters are to be given confidence
+intervals, either a vector of numbers or a vector of names. If missing, all
+parameters are considered.}
+
+\item{level}{The confidence level required. Default is 0.95 (i.e., 95\%).}
+
+\item{exp}{Whether to generate confidence interval for the exponentiated
+coefficients (i.e., the estimated risk ratio, if \code{TRUE}, the default),
+or for the estimated coefficients (if \code{FALSE}).}
 }
 \description{
 Summarise the fitted model for the doubling of cases approach
@@ -35,5 +49,7 @@ See usage in \code{\link{logit_db}}.
 \item \code{logLik.db}: Extract log-likelihood with respect to the log-binomial model of interest
 
 \item \code{AIC.db}: Extract AIC
+
+\item \code{confint.db}: Confidence intervals for estimated coefficients
 }}
 
