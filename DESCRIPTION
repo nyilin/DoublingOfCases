@@ -9,7 +9,7 @@ Description: Estimate the relative risk in studies of binary outcomes by
   doubling the cases in the data and applying the logistic regression model to 
   modified data. Applicable to cohort data, cross-sectional data and 
   case-control data.
-License: LGPL-3
+License: MIT
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
