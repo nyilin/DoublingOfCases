@@ -4,6 +4,8 @@
 [![](https://img.shields.io/badge/10.1186/s12874-022-01636-3-yellow.svg)](https://doi.org/10.1186/s12874-022-01636-3)
 <!-- badges: end -->
 
+DoublingOfCases: Estimating Risk Ratio from Any Standard Epidemiological Design by Doubling the Cases
+================
 
 Use the following code to install the package:
 
