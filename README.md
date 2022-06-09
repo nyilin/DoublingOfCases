@@ -1,3 +1,10 @@
+
+<!-- badges: start -->
+
+[![](https://img.shields.io/badge/10.1186/s12874-022-01636-3-yellow.svg)](https://doi.org/10.1186/s12874-022-01636-3)
+<!-- badges: end -->
+
+
 Use the following code to install the package:
 
 ``` r
@@ -43,3 +50,7 @@ logLik(m_cc)
 head(fitted(m_cc))
 ## [1] 0.1423518 0.2871404 0.2871404 0.2871404 0.2871404 0.2871404
 ```
+
+**Citation:**
+
+Ning Y, Lam A, Reilly M. Estimating risk ratio from any standard epidemiological design by doubling the cases. BMC Med Res Methodol 22, 157 (2022). https://doi.org/10.1186/s12874-022-01636-3
