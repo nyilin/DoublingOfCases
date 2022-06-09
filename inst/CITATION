@@ -1,0 +1,13 @@
+citHeader("To cite DoublingOfCases in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = {Estimating risk ratio from any standard epidemiological design by doubling the cases},
+  author   = {Ning, Yilin and Lam, Anastasia and Reilly, Marie},
+  journal  = {BMC Medical Research Methodology},
+  year     = {2022},
+  volume   = {22},
+  number   = {1},
+  pages    = {1--15},
+  url      = {https://doi.org/10.1186/s12874-022-01636-3}
+)

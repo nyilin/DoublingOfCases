@@ -1,10 +1,14 @@
 ---
-title: "Estimating Relative Risk in Studies of Binary Outcomes Using the Doubling of Cases Approach"
-author: "Yilin Ning"
+title: "DoublingOfCases: Estimating Risk Ratio from Any Standard Epidemiological Design by Doubling the Cases"
 output: 
-  md_document:
-    variant: gfm
+  github_document:
+    toc: yes
 ---
+
+<!-- badges: start -->
+
+[![DOI](https://img.shields.io/badge/doi-10.1186/s12874.022.01636.3-yellow.svg)](https://doi.org/10.1186/s12874-022-01636-3)
+<!-- badges: end -->
 
 ```{r setup, include=FALSE}
 library(knitr)
@@ -45,3 +49,7 @@ AIC(m_cc)
 logLik(m_cc)
 head(fitted(m_cc))
 ```
+
+**Citation:**
+
+Ning Y, Lam A, Reilly M. Estimating risk ratio from any standard epidemiological design by doubling the cases. BMC Med Res Methodol 22, 157 (2022). https://doi.org/10.1186/s12874-022-01636-3
