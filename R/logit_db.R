@@ -93,6 +93,9 @@ logit_db <- function(formula, weight_name = NULL, data, ...) {
   x_fml <- as.character(formula[[3]])
   if (length(x_fml) > 1) {
     x_fml <- paste("~", paste(x_fml[-1], collapse = x_fml[1]))
+  } else if (x_fml == ".") {
+    x_fml <- paste("~", paste(setdiff(names(data), c(y_name, weight_name)), collapse = " + "))
+    formula <- as.formula(paste(y_name, x_fml))
   } else {
     x_fml <- paste("~", as.character(x_fml))
   }
@@ -151,13 +154,27 @@ vcov.db <- function(object, ...) {
 #' Extract log-likelihood with respect to the log-binomial model of interest
 #' @export
 logLik.db <- function(object, ...) {
-  object$log_likelihood
+  if (is.na(object$log_likelihood)) {
+    message(
+      "Log likelihood cannot be computed because some estimated probabilities exceed 1."
+    )
+    NULL
+  } else {
+    object$log_likelihood
+  }
 }
 #' @describeIn summary.db
 #' Extract AIC
 #' @export
 AIC.db <- function(object, ..., k = 2) {
-  k * length(coef(object)) - 2 * logLik(object)
+  if (is.na(object$log_likelihood)) {
+    message(
+      "Log likelihood cannot be computed because some estimated probabilities exceed 1."
+    )
+    NULL
+  } else {
+    k * length(coef(object)) - 2 * logLik(object)
+  }
 }
 #' @describeIn summary.db
 #' Confidence intervals for estimated coefficients
